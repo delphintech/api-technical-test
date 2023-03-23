@@ -1,6 +1,8 @@
 class ListingsController < ApplicationController
   def index
-    render json: Listing.all
+    @listings = Listing.pluck(:id, :num_rooms)
+    json = @listings.map { |listing| { id: listing[0], num_romms: listing[1] } }
+    render json: json
   end
 
   def show
@@ -39,6 +41,6 @@ class ListingsController < ApplicationController
   private
 
   def listing_params
-    params.require(:listing).permit(:num_rooms)
+    params.require(:listing).permit("num_rooms")
   end
 end
